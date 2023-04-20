@@ -1,28 +1,131 @@
 <template>
-    <Page>
+    <Page backgroundImage="~/assets/amw_prime.jpg">
         <ActionBar>
-            <Label text="Home"/>
+            <Label text="Трекер задач"/>
         </ActionBar>
-
-        <GridLayout>
-            <Label class="info">
-                <FormattedString>
-                    <Span class="fas" text.decode="&#xf135; "/>
-                    <Span :text="message"/>
-                </FormattedString>
-            </Label>
+        <GridLayout columns="*" rows="*, 6*, *">
+            <SegmentedBar col="0" row="0" v-model="selectedFilter" class="filter-list" selectedBackgroundColor="white">
+                <SegmentedBarItem title="Все"/>
+                <SegmentedBarItem title="В процессе"/>
+                <SegmentedBarItem title="Выполнено"/>
+            </SegmentedBar>
+            <FlexboxLayout flexDirection="column" col="0" row="1" class="list-tasks">
+                <template v-for="(task, key) in filteredListTasks">
+                    <template v-if="task.done">
+                        <FlexboxLayout flexDirection="column"  :key="key" class="done-item" @tap="insideTask(task.id)">
+                            <label :text="task.title" class="title-task" />
+                            <label :text="task.description" class="description-task" />
+                            <FlexboxLayout class="date-front">
+                                 <label :text="task.date" class="date-task"/>
+                            </FlexboxLayout>
+                        </FlexboxLayout>    
+                    </template>
+                    <template v-else>
+                        <FlexboxLayout flexDirection="column" :key="key" class="not-done-item" @tap="insideTask(task.id)">
+                            <label :text="task.title" class="title-task" />
+                            <label :text="task.description" class="description-task" />
+                            <FlexboxLayout class="button-access-pos">
+                                <button class="button-access" text="Выполнено" @tap="done"/>
+                            </FlexboxLayout>
+                            <FlexboxLayout class="date-front">
+                                <label :text="task.date" class="date-task"/>
+                            </FlexboxLayout>
+                        </FlexboxLayout>
+                    </template>
+                </template>
+            </FlexboxLayout>
+            <button @tap="add" col="0" row="2" class="button-task" text="+"/>
         </GridLayout>
+       
     </Page>
 </template>
 
 <script>
+import Add from "./Add.vue";
+import Change from "./Change.vue"
+import * as ApplicationSettings from '@nativescript/core/application-settings';
   export default {
-    computed: {
-      message() {
-        return "Blank {N}-Vue app";
-      }
-    }
-  };
+    data() {
+        return {
+            listTasks: [],
+            selectedFilter: "",
+            filteredListTasks: [],
+        };
+    },
+    watch: {
+        selectedFilter: function () {
+            this.filter();
+        },
+    },
+    mounted() {
+        if (ApplicationSettings.getString("tasks")) { // получаем из памяти всё, что хранится в переменной tasks
+            this.listTasks = Object.values(JSON.parse(ApplicationSettings.getString("tasks"))); // там хранится json. Эти методы грубо говоря парсят его в обычный список
+            // получается это список словарей [{1: "1", 2: "2"}, {"yes": "no"}]
+        }
+        this.listTasks = this.listTasks.reverse();
+        this.filter();
+    },
+    methods: {
+        add() {
+            this.$navigateTo(Add);
+        },
+        change() {
+            this.$navigateTo(Change);
+        },
+        save(){ //Сохранение задачи и переход на домашнюю стр.
+            let listSave = Object.assign({}, this.listTasks);
+            ApplicationSettings.setString("tasks", JSON.stringify(listSave));
+            this.backHomeWithSave();
+        },
+        done(){
+            this.listTasks.forEach(item =>{
+                if(item.id == this.id){
+                    item.done = true;
+                }
+            });
+            this.save();
+        },
+        filter() {
+            switch (this.selectedFilter) {
+                case 0: //Выбраны все
+                    this.filteredListTasks = [];
+                    this.filteredListTasks = this.listTasks;
+                    break;
+                case 1: //Выбраны те, что в процессе
+                    this.filteredListTasks = [];
+                    this.filteredListTasks.forEach(item => {
+                        if (!item.done) {
+                            this.filteredListTasks.push({
+                                id: item.id,
+                                title: item.title,
+                                description: item.description,
+                                date: item.date,
+                                done: item.done,
+                            });
+                        }
+                    });
+                    break;
+                case 2: // Выполненные
+                    this.filteredListTasks = [];
+                    this.filteredListTasks.forEach(item => {
+                        if (item.done) {
+                            this.filteredListTasks.push({
+                                id: item.id,
+                                title: item.title,
+                                description: item.description,
+                                date: item.date,
+                                done: item.done,
+                            });
+                        }
+                    });
+                    break;
+            }
+        },
+        insideTask(id) {
+            this.$navigateTo(Change, { props: { id: id } });
+        }
+    },
+};
 </script>
 
 <style scoped lang="scss">

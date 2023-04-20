@@ -19,3 +19,116 @@
   font-family: 'Font Awesome 5 Free', 'fa-regular-400';
   font-weight: 400;
 }
+
+actionBar {
+  background-color: #dadada;
+}
+
+.button-task {
+  margin-bottom: 5%;
+  background-color: rgba(54, 201, 255, 0.785);
+  border-radius: 50%;
+  width: 25%;
+  height: 13%;
+  font-size: 50%;
+}
+
+.button-task:active{
+  background-color: rgb(200, 240, 255);
+  transition: background-color 5s
+}
+
+SegmentedBar {
+  background-color: rgba(54, 201, 255, 0.785);
+}
+
+.task-change {
+  background-color: rgba(34, 132, 168, 0.903);
+  height: 53%;
+  margin-bottom: 43%;
+}
+
+.title {
+  background-color: white;
+  border-radius: 15px;
+  font-size: 20px;
+  color: black;
+  padding: 5% 5% 5% 5%;
+  height: 10%;
+}
+
+.title-label {
+  font-size: 24%;
+  margin-left: 4%;
+  margin-top: 4%;
+  margin-bottom: 1%;
+}
+
+.description-label {
+  font-size: 20%;
+  margin-left: 4%;
+  margin-top: 4%;
+  margin-bottom: 1%;
+}
+
+.description {
+  background-color: white;
+  border-radius: 15px;
+  font-size: 20px;
+  color: black;
+  padding: 5% 5% 5% 5%;
+  height: 10%;
+}
+
+.button-save {
+  border-radius: 30%;
+  width: 10%;
+}
+
+.done-item {
+  height: 20%;
+  width: 90%;
+  background-color: rgba(34, 132, 168, 0.975);
+  margin-top: 2%;
+  color: black;
+  border-radius: 20%;
+  padding: 7% 20% 7% 20%;
+}
+
+.not-done-item {
+  height: 20%;
+  width: 90%;
+  background-color: rgba(255, 201, 53, 0.975);
+  margin-top: 2%;
+  color: black;
+  border-radius: 20%;
+  padding: 7% 20% 7% 20%;
+}
+
+.title-task {
+  font-size: 20%;
+}
+
+.description-task {
+  font-size: 15%;
+}
+
+.date-task {
+  font-size: 10%;
+}
+
+.date-front {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.button-access-pos {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.button-access {
+  border-radius: 30%;
+}
