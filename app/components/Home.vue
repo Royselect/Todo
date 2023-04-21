@@ -10,7 +10,14 @@
                 <SegmentedBarItem title="Выполнено"/>
             </SegmentedBar>
             <FlexboxLayout flexDirection="column" col="0" row="1" class="list-tasks">
-                <template v-for="(task, key) in filteredListTasks">
+                <template v-if="filteredListTasks.length == 0 && (selectedFilter == 0 || isNaN(selectedFilter))">
+                    <FlexboxLayout flexDirection="column" class="item-hollow">
+                        <label class="title-task" text="Список задач пуст!"/>
+                        <label class="description-task" text="Используйте кнопку ниже чтобы добавить" />
+                    </FlexboxLayout>
+                </template>
+                <template v-else>
+                    <template v-for="(task, key) in filteredListTasks">
                     <template v-if="task.done">
                         <FlexboxLayout flexDirection="row"  :key="key" class="done-item" @tap="insideTask(task.id)">
                             <FlexboxLayout flexDirection="column" @tap="insideTask(task.id)">
@@ -35,6 +42,7 @@
                             </FlexboxLayout>
                         </FlexboxLayout>
                     </template>
+                </template>
                 </template>
             </FlexboxLayout>
             <button @tap="add" col="0" row="2" class="button-task" text="+"/>

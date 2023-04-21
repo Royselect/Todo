@@ -44,14 +44,14 @@ SegmentedBar {
 
 .task-change {
   background-color: rgba(34, 132, 168, 0.903);
-  height: 53%;
-  margin-bottom: 43%;
+  height: 68%;
+  margin-bottom: 30%;
 }
 
 .task-change-del {
   background-color: rgba(34, 132, 168, 0.903);
-  height: 60%;
-  margin-bottom: 38%;
+  height: 68%;
+  margin-bottom: 28%;
 }
 
 .title {
@@ -89,6 +89,18 @@ SegmentedBar {
 .button-save {
   border-radius: 30%;
   width: 10%;
+}
+
+.item-hollow {
+  height: 20%;
+  width: 90%;
+  background-color: rgba(34, 155, 168, 0.975);
+  margin-top: 2%;
+  color: black;
+  border-radius: 20%;
+  padding: 7% 20% 7% 20%;
+  justify-content: center;
+  text-align: center;
 }
 
 .done-item {
