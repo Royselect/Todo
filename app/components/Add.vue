@@ -13,7 +13,6 @@
         </FlexboxLayout>
     </Page>
 </template>
-
 <script>
 import * as ApplicationSettings from '@nativescript/core/application-settings';
 import Home from "./Home.vue"
@@ -29,28 +28,28 @@ export default {
         backHomeWithSave() {
             this.$navigateTo(Home);
         },
-        backHome(){
+        backHome() {
             this.$navigateBack();
         },
-        save(){ //Сохранение задачи и переход на домашнюю стр.
+        save() {
             let listSave = Object.assign({}, this.listTasks);
             ApplicationSettings.setString("tasks", JSON.stringify(listSave));
             this.backHomeWithSave();
         },
-        add(){
+        add() {
             let currentDate = new Date();
             let month = currentDate.getMonth();
             month = month.toString();
-            let day = currentDate.getDate().toString()
+            let day = currentDate.getDate().toString();
             let year = currentDate.getFullYear();
             //Условия для нормальной красивой записи даты
-            if(month.length == 1){
-                month = "0"+month;
+            if (month.length == 1) {
+                month = "0" + month;
             }
-            if(day.length == 1){
-                day = "0"+day;
+            if (day.length == 1) {
+                day = "0" + day;
             }
-            let date = day+"."+month+"."+year;
+            let date = day + "." + month + "." + year;
             //Собираем задачу уже учитывая и дату, и сохраняем
             this.listTasks.push({
                 id: Math.random(),
@@ -60,7 +59,6 @@ export default {
                 done: false,
             });
             this.save();
-
         },
     },
     mounted() {
