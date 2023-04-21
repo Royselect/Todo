@@ -69,9 +69,8 @@ import * as ApplicationSettings from '@nativescript/core/application-settings';
         },
     },
     mounted() {
-        if (ApplicationSettings.getString("tasks")) { // получаем из памяти всё, что хранится в переменной tasks
-            this.listTasks = Object.values(JSON.parse(ApplicationSettings.getString("tasks"))); // там хранится json. Эти методы грубо говоря парсят его в обычный список
-            // получается это список словарей [{1: "1", 2: "2"}, {"yes": "no"}]
+        if (ApplicationSettings.getString("tasks")) { 
+            this.listTasks = Object.values(JSON.parse(ApplicationSettings.getString("tasks")));
         }
         this.listTasks = this.listTasks.reverse();
         this.filter();
