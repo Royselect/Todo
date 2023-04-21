@@ -4,7 +4,7 @@
             <NavigationButton text="Go back" android.systemIcon="ic_menu_back" @tap="backHome"/>
             <Label text="Изменение задачи"/>
         </ActionBar>
-        <FlexboxLayout flexDirection="column" class="task-change">
+        <FlexboxLayout flexDirection="column" class="task-change-del">
             <label text="Название задачи: " class="title-label"/>
             <TextView v-model="title" editable="true" class="title"/>
             <label text="Описание задачи: " class="description-label" />
@@ -19,12 +19,26 @@
 import * as ApplicationSettings from '@nativescript/core/application-settings';
 import Home from "./Home.vue"
 export default {
+    props: ['id'],
     data(){
         return{
             listTasks: [],
+            selectedTask: [],
             title: "",
             description: "",
         }
+    },
+    mounted(){
+        if (ApplicationSettings.getString("tasks")) { 
+            this.listTasks = Object.values(JSON.parse(ApplicationSettings.getString("tasks"))); 
+        }
+        this.listTasks.forEach(task => { // ищу по айдишнику свою задачу
+            if(task.id == this.id){
+                this.selectedTask = task;
+            }
+        });
+        this.title = this.selectedTask.title;
+        this.description = this.selectedTask.description;
     },
     methods: {
         backHomeWithSave() {
@@ -56,13 +70,14 @@ export default {
         },
         change(){
             this.listTasks.forEach(item =>{
-                if(item.id != this.id){
+                if(item.id == this.id){
                     if(this.title != "" || this.title.length !=0){
                         item.title = this.title;
                     }
                     if(this.description != "" || this.description.length !=0){
-                        item.description = this.description;
+                        this.description == item.description;
                     }
+                    item.description = this.description;
                 }
             });
             this.save();

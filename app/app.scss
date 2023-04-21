@@ -48,6 +48,12 @@ SegmentedBar {
   margin-bottom: 43%;
 }
 
+.task-change-del {
+  background-color: rgba(34, 132, 168, 0.903);
+  height: 60%;
+  margin-bottom: 38%;
+}
+
 .title {
   background-color: white;
   border-radius: 15px;
@@ -93,6 +99,7 @@ SegmentedBar {
   color: black;
   border-radius: 20%;
   padding: 7% 20% 7% 20%;
+  justify-content: space-between;
 }
 
 .not-done-item {
@@ -103,6 +110,12 @@ SegmentedBar {
   color: black;
   border-radius: 20%;
   padding: 7% 20% 7% 20%;
+  justify-content: space-between;
+}
+
+.title-access {
+  font-size: 20%;
+  justify-self: center;
 }
 
 .title-task {
@@ -127,8 +140,12 @@ SegmentedBar {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+  background-color: aqua;
+  margin-left: 65%;
 }
 
 .button-access {
-  border-radius: 30%;
+  border-radius: 50%;
+  width: 5%;
+
 }

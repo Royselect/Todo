@@ -12,22 +12,25 @@
             <FlexboxLayout flexDirection="column" col="0" row="1" class="list-tasks">
                 <template v-for="(task, key) in filteredListTasks">
                     <template v-if="task.done">
-                        <FlexboxLayout flexDirection="column"  :key="key" class="done-item" @tap="insideTask(task.id)">
-                            <label :text="task.title" class="title-task" />
-                            <label :text="task.description" class="description-task" />
-                            <FlexboxLayout class="date-front">
-                                 <label :text="task.date" class="date-task"/>
+                        <FlexboxLayout flexDirection="row"  :key="key" class="done-item" @tap="insideTask(task.id)">
+                            <FlexboxLayout flexDirection="column" @tap="insideTask(task.id)">
+                                <label :text="task.title" class="title-task" />
+                                <label :text="task.description" class="description-task" />
+                            </FlexboxLayout>
+                            <FlexboxLayout flexDirection="column" class="date-front">
+                                <label text="Выполнено!" class="title-access"/>
+                                <label :text="task.date" class="date-task"/>
                             </FlexboxLayout>
                         </FlexboxLayout>    
                     </template>
                     <template v-else>
-                        <FlexboxLayout flexDirection="column" :key="key" class="not-done-item" @tap="insideTask(task.id)">
-                            <label :text="task.title" class="title-task" />
-                            <label :text="task.description" class="description-task" />
-                            <FlexboxLayout class="button-access-pos">
-                                <button class="button-access" text="Выполнено" @tap="done"/>
+                        <FlexboxLayout flexDirection="row" :key="key" class="not-done-item">
+                            <FlexboxLayout flexDirection="column" @tap="insideTask(task.id)">
+                                <label :text="task.title" class="title-task" />
+                                <label :text="task.description" class="description-task" />
                             </FlexboxLayout>
-                            <FlexboxLayout class="date-front">
+                            <FlexboxLayout flexDirection="column" class="date-front">
+                                <button class="button-access" text="✔" @tap="done(task.id)"/>
                                 <label :text="task.date" class="date-task"/>
                             </FlexboxLayout>
                         </FlexboxLayout>
@@ -69,23 +72,24 @@ import * as ApplicationSettings from '@nativescript/core/application-settings';
         add() {
             this.$navigateTo(Add);
         },
-        change() {
-            this.$navigateTo(Change);
-        },
-        save(){ //Сохранение задачи и переход на домашнюю стр.
+        save() {
             let listSave = Object.assign({}, this.listTasks);
             ApplicationSettings.setString("tasks", JSON.stringify(listSave));
-            this.backHomeWithSave();
+            //this.backHomeWithSave();
         },
-        done(){
-            this.listTasks.forEach(item =>{
-                if(item.id == this.id){
+        done(id) {
+            this.listTasks.forEach(item => {
+                if (item.id == id) {
                     item.done = true;
                 }
             });
             this.save();
         },
         filter() {
+            if (isNaN(this.selectedFilter)) {
+                this.filteredListTasks = [];
+                this.filteredListTasks = this.listTasks;
+            }
             switch (this.selectedFilter) {
                 case 0: //Выбраны все
                     this.filteredListTasks = [];
@@ -93,7 +97,7 @@ import * as ApplicationSettings from '@nativescript/core/application-settings';
                     break;
                 case 1: //Выбраны те, что в процессе
                     this.filteredListTasks = [];
-                    this.filteredListTasks.forEach(item => {
+                    this.listTasks.forEach(item => {
                         if (!item.done) {
                             this.filteredListTasks.push({
                                 id: item.id,
@@ -107,7 +111,7 @@ import * as ApplicationSettings from '@nativescript/core/application-settings';
                     break;
                 case 2: // Выполненные
                     this.filteredListTasks = [];
-                    this.filteredListTasks.forEach(item => {
+                    this.listTasks.forEach(item => {
                         if (item.done) {
                             this.filteredListTasks.push({
                                 id: item.id,
